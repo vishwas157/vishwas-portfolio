@@ -133,6 +133,7 @@ export const portfolioData = {
 
   character3d: {
     modelPath: "/models/character.glb",
+    fallbackImage: "/models/character-fallback.png",
     position: [0.05, -0.90, 0],
     mobilePosition: [0, -0.85, 0],
     scale: 1.32,

@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Send } from 'lucide-react';
-import CharacterScene from './CharacterScene';
 import { portfolioData } from '../data/portfolio';
+import { useResponsive3D } from '../hooks/useResponsive3D';
+import CharacterStatic from './CharacterStatic';
+
+// Code-split 3D scene dynamic chunk (never downloaded on mobile)
+const CharacterScene = lazy(() => import('./CharacterScene'));
 
 export default function Hero() {
   const { hero } = portfolioData;
+  const { shouldLoad3D } = useResponsive3D();
 
   return (
     <section
@@ -84,18 +89,24 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Right Column: Prominent Large 3D Character Canvas */}
+        {/* Right Column: Prominent 3D Character Canvas (Desktop) or Static Image (Mobile) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="lg:col-span-6 h-[520px] sm:h-[620px] lg:h-[720px] w-full relative flex items-center justify-center"
+          className="lg:col-span-6 h-[420px] sm:h-[540px] lg:h-[720px] w-full relative flex items-center justify-center min-h-[380px]"
         >
           {/* Subtle Graphic Backdrop Blob */}
           <div className="absolute w-[22rem] h-[22rem] sm:w-[28rem] sm:h-[28rem] rounded-full bg-gradient-to-tr from-amber-300 via-orange-300 to-rose-300 opacity-60 blur-xl pointer-events-none" />
 
-          {/* Interactive R3F Scene */}
-          <CharacterScene />
+          {/* Conditional 3D Scene / Static Fallback */}
+          {shouldLoad3D ? (
+            <Suspense fallback={<CharacterStatic />}>
+              <CharacterScene />
+            </Suspense>
+          ) : (
+            <CharacterStatic />
+          )}
         </motion.div>
 
       </div>

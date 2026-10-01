@@ -47,8 +47,16 @@ export default function CharacterScene() {
     pointerId: null
   });
 
+  const [frameloop, setFrameloop] = useState('always');
+
   // Device and accessibility setup
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      setFrameloop(document.hidden ? 'never' : 'always');
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -72,6 +80,7 @@ export default function CharacterScene() {
     );
 
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('resize', checkMobile);
 
       motionQuery.removeEventListener(
@@ -204,6 +213,7 @@ export default function CharacterScene() {
       }}
     >
       <Canvas
+        frameloop={frameloop}
         camera={{
           position: [0, 0.75, 5.2],
           fov: 35,
