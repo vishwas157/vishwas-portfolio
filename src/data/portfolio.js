@@ -131,9 +131,14 @@ export const portfolioData = {
     github: "https://github.com/vishwas157"
   },
 
+  characterDoodle: {
+    imagePath: "/images/vishwas-doodle.png",
+    altText: "Vishwas Suthar - Developer Character"
+  },
+
   character3d: {
     modelPath: "/models/character.glb",
-    fallbackImage: "/models/character-fallback.png",
+    fallbackImage: "/images/vishwas-doodle.png",
     position: [0.05, -0.90, 0],
     mobilePosition: [0, -0.85, 0],
     scale: 1.32,
